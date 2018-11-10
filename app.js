@@ -1,13 +1,14 @@
 var createError = require('http-errors');
 var express = require('express');
 var expressLayouts = require('express-ejs-layouts');
-
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var postsRouter = require('./routes/posts');
+var usersRouter = require('./routes/users');
+
 var database = require('./database/database');
 
 database();
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressLayouts);
 app.use('/', indexRouter);
 app.use('/blog', postsRouter);
+app.use('/user', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
