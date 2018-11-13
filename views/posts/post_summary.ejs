@@ -1,6 +1,10 @@
 <!-- Contains html for rendering a post summary -->
 <!-- Add and format blog content here -->
-<h2> <a href="/blog/<%= post['slug']%>">
-		<%- post['title'] %>
-</h2></a>
-<div><%- post['summary'] %></div>
+<div class="card">
+	<div class="card-body">
+		<h3 class="card-title"> 
+			<a href="/blog/<%= post['slug']%>"><%- post['title'] %></a>
+		</h3>
+		<div><%- post['summary'] %></div>
+	</div>
+</div>

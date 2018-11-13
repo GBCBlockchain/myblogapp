@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var expressLayouts = require('express-ejs-layouts');
+var session = require('express-session')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -26,6 +27,20 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+var sess = {
+	secret: 'myblog secreycay',
+  cookie: {},
+  saveUninitialized: false,
+  resave: false
+}
+
+var currSess;
+if (app.get('env') === 'production') {
+	app.set('trust proxy', 1) // trust first proxy
+	sess.cookie.secure = true // serve secure cookies
+}
+
+app.use(session(sess))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressLayouts);
 app.use('/', indexRouter);
@@ -44,7 +59,13 @@ app.use(function(err, req, res, next) {
   // ReRender our view on the Server with the relevant validation messages to provide a 'good' UX
   
   res.locals.message = err.message
-  if (req.method === "POST" || req.method === "PUT" && err.name === 'ValidationError') {
+
+  if (req.path === '/user/register' && req.method === "POST" && err.name === 'ValidationError') {
+    res.locals.user = req.body
+    res.locals.title = "Register"
+    res.render('users/register')
+  }
+  else if (req.method === "POST" || req.method === "PUT" && err.name === 'ValidationError') {
     res.locals.post = req.body
     res.render('posts/new', {title: "New Blog Post"})
   } else {

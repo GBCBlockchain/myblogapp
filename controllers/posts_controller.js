@@ -3,8 +3,10 @@ const Post = require('../models/post');
 
 // Displays a list of all blog posts
 exports.index = function (req, res, next) {
+    currSess = req.session
     Post.find().exec((err, posts) => {
         console.log(posts)
+        res.locals.user = currSess.email
         res.locals.posts = posts
         res.locals.title = "Blog Posts"
         res.render('posts/index')
@@ -21,12 +23,6 @@ exports.show = function (req, res, next) {
 };
 
 exports.new = function(req, res, next) {
-    // let post = posts[0];
-    // let message = ""
-    // let post = {
-    //     title: "",
-    //     content: ""
-    // }
     res.locals.title = "New Blog Post"
     res.locals.post = {title: "", content: "", summary: ""}
     res.locals.message  = ""
