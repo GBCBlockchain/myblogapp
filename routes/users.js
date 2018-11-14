@@ -13,8 +13,12 @@ router.get('/login', usersController.login);
 // POST /user/login
 router.post('/login', usersController.newSession)
 
-// POST /user/logout/
-router.post('/logout', usersController.logout);
+// GET /user/logout/
+// For this example can use get as all this needs to do is
+// Destroy the session
+// This is different from a restful resource where you would
+// normally use router.delete
+router.get('/logout', usersController.logout);
 
 // Export routes
 module.exports = router;

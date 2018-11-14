@@ -1,8 +1,13 @@
 
 <!-- Contains partial for the posts index page -->
-
+<br>
 <h1>Articles</h1>
-<a href="/blog/new"><h3>New post</h3></a>
+
+<!-- Only show new blog and buttons if logged in user -->
+<% if (locals.email) { %>
+  <a href="/blog/new"><h3>New post</h3></a>
+<% } %>
+
 <% posts.forEach(function(post) { %>
   <% include ./post_summary %>
  <% }) %>
